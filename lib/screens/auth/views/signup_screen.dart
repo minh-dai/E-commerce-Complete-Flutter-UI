@@ -14,6 +14,7 @@ class SignUpScreen extends StatefulWidget {
 
 class _SignUpScreenState extends State<SignUpScreen> {
   final _formKey = GlobalKey<FormState>();
+  bool isCheck = false;
 
   @override
   Widget build(BuildContext context) {
@@ -46,8 +47,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   Row(
                     children: [
                       Checkbox(
-                        onChanged: (value) {},
-                        value: false,
+                        onChanged: (value) {
+                          setState(() {
+                            isCheck = !isCheck;
+                          });
+                        },
+                        value: isCheck,
                       ),
                       Expanded(
                         child: Text.rich(

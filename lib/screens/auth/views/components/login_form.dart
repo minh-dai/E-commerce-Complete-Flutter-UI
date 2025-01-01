@@ -7,9 +7,13 @@ class LogInForm extends StatelessWidget {
   const LogInForm({
     super.key,
     required this.formKey,
+    required this.emailController,
+    required this.passwordController,
   });
 
   final GlobalKey<FormState> formKey;
+  final TextEditingController emailController;
+  final TextEditingController passwordController;
 
   @override
   Widget build(BuildContext context) {
@@ -18,6 +22,7 @@ class LogInForm extends StatelessWidget {
       child: Column(
         children: [
           TextFormField(
+            controller: emailController,
             onSaved: (emal) {
               // Email
             },
@@ -28,7 +33,7 @@ class LogInForm extends StatelessWidget {
               hintText: "Email address",
               prefixIcon: Padding(
                 padding:
-                    const EdgeInsets.symmetric(vertical: defaultPadding * 0.75),
+                const EdgeInsets.symmetric(vertical: defaultPadding * 0.75),
                 child: SvgPicture.asset(
                   "assets/icons/Message.svg",
                   height: 24,
@@ -46,6 +51,7 @@ class LogInForm extends StatelessWidget {
           ),
           const SizedBox(height: defaultPadding),
           TextFormField(
+            controller: passwordController,
             onSaved: (pass) {
               // Password
             },

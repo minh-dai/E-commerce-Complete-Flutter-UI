@@ -6,7 +6,6 @@ import 'package:shop/components/network_image_with_loader.dart';
 import 'package:shop/screens/product/views/added_to_cart_message_screen.dart';
 import 'package:shop/screens/product/views/components/product_list_tile.dart';
 import 'package:shop/screens/product/views/location_permission_store_availability_screen.dart';
-import 'package:shop/screens/product/views/size_guide_screen.dart';
 
 import '../../../constants.dart';
 import 'components/product_quantity.dart';
@@ -110,21 +109,6 @@ class _ProductBuyNowScreenState extends State<ProductBuyNowScreen> {
                     sizes: const ["S", "M", "L", "XL", "XXL"],
                     selectedIndex: 1,
                     press: (value) {},
-                  ),
-                ),
-                SliverPadding(
-                  padding: const EdgeInsets.symmetric(vertical: defaultPadding),
-                  sliver: ProductListTile(
-                    title: "Size guide",
-                    svgSrc: "assets/icons/Sizeguid.svg",
-                    isShowBottomBorder: true,
-                    press: () {
-                      customModalBottomSheet(
-                        context,
-                        height: MediaQuery.of(context).size.height * 0.9,
-                        child: const SizeGuideScreen(),
-                      );
-                    },
                   ),
                 ),
                 SliverPadding(

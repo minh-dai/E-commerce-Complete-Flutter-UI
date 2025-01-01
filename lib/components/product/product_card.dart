@@ -35,7 +35,7 @@ class ProductCard extends StatelessWidget {
             child: Stack(
               children: [
                 NetworkImageWithLoader(image, radius: defaultBorderRadious),
-                if (dicountpercent != null)
+                if (dicountpercent != null && dicountpercent! > 0)
                   Positioned(
                     right: defaultPadding / 2,
                     top: defaultPadding / 2,
@@ -85,7 +85,7 @@ class ProductCard extends StatelessWidget {
                         .copyWith(fontSize: 12),
                   ),
                   const Spacer(),
-                  priceAfetDiscount != null
+                  priceAfetDiscount != null && priceAfetDiscount! > 0
                       ? Row(
                           children: [
                             Text(
