@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:shop/components/product/secondary_product_card.dart';
 import 'package:shop/components/skleton/product/secondery_produts_skelton.dart';
 import 'package:shop/models/product_model.dart';
 
@@ -12,15 +11,17 @@ import '../../../../route/route_constants.dart';
 class MostPopular extends StatelessWidget {
   const MostPopular({
     super.key,
+    this.isShowTitle = true,
   });
 
-  final String collectionName= "popular_products";
+  final bool isShowTitle;
+  final String collectionName = "popular_products";
 
   Future<List<ProductModel>> fetchPopularProducts() async {
     try {
       // Lấy danh sách sản phẩm từ Firestore
       final snapshot =
-      await FirebaseFirestore.instance.collection(collectionName).get();
+          await FirebaseFirestore.instance.collection(collectionName).get();
 
       // Chuyển đổi dữ liệu Firestore thành danh sách ProductModel
       return snapshot.docs.map((doc) {
@@ -37,14 +38,15 @@ class MostPopular extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const SizedBox(height: defaultPadding / 2),
-        Padding(
-          padding: const EdgeInsets.all(defaultPadding),
-          child: Text(
-            "Most Popular",
-            style: Theme.of(context).textTheme.titleSmall,
+        if (isShowTitle) const SizedBox(height: defaultPadding / 2),
+        if (isShowTitle)
+          Padding(
+            padding: const EdgeInsets.all(defaultPadding),
+            child: Text(
+              "Most Popular",
+              style: Theme.of(context).textTheme.titleSmall,
+            ),
           ),
-        ),
         SizedBox(
           height: 220,
           child: FutureBuilder<List<ProductModel>>(

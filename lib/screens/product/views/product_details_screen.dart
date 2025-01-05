@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shop/components/custom_modal_bottom_sheet.dart';
 import 'package:shop/components/product/product_card.dart';
 import 'package:shop/constants.dart';
@@ -7,6 +8,8 @@ import 'package:shop/models/product_model.dart';
 import 'package:shop/screens/product/views/product_returns_screen.dart';
 
 import '../../../components/review_card.dart';
+import '../../../route/route_constants.dart';
+import '../../home/views/components/most_popular.dart';
 import 'components/product_images.dart';
 import 'components/product_info.dart';
 import 'components/product_list_tile.dart';
@@ -16,11 +19,12 @@ class ProductDetailsScreen extends StatefulWidget {
     super.key,
     required this.productId,
     required this.collection,
+    this.callBack,
   });
 
   final String productId;
   final String collection;
-
+  final Function? callBack;
 
   @override
   State<ProductDetailsScreen> createState() => _ProductDetailsScreenState();
@@ -29,11 +33,20 @@ class ProductDetailsScreen extends StatefulWidget {
 class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
   bool _isLoading = true;
   ProductModel? _product;
+  String email = "";
 
   @override
   void initState() {
     super.initState();
+    _loadProfileData();
     _fetchProductDetails();
+  }
+
+  Future<void> _loadProfileData() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      email = prefs.getString('email') ?? '';
+    });
   }
 
   Future<void> _fetchProductDetails() async {
@@ -60,6 +73,52 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
     }
   }
 
+  Future<void> _deleteProduct() async {
+    try {
+      await FirebaseFirestore.instance
+          .collection('products')
+          .doc(widget.productId)
+          .delete();
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Product deleted successfully!')),
+      );
+      Navigator.of(context).pop(); // Quay lại màn hình trước
+      if(widget.callBack != null){
+        widget.callBack!();
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Failed to delete product: $e')),
+      );
+    }
+  }
+
+
+  void _showDeleteDialog() {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Confirm Delete'),
+        content: const Text(
+            'Are you sure you want to delete this product? This action cannot be undone.'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: const Text('Cancel'),
+          ),
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop(true);
+              _deleteProduct();
+            },
+            child: const Text('Delete'),
+          ),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -78,7 +137,40 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                         backgroundColor:
                             Theme.of(context).scaffoldBackgroundColor,
                         floating: true,
-                        actions: [],
+                        actions: email != _product!.ownerId
+                            ? []
+                            : [
+                                PopupMenuButton<String>(
+                                  onSelected: (value) async {
+                                    // Xử lý khi một menu item được chọn
+                                    if (value == 'edit') {
+                                      await Navigator.pushNamed(
+                                        context,
+                                        updateProduct,
+                                        arguments: _product!.id,
+                                      );
+                                      if(widget.callBack != null){
+                                        widget.callBack!();
+                                      }
+                                      _fetchProductDetails();
+                                    } else if (value == 'delete') {
+                                      _showDeleteDialog();
+                                    }
+                                  },
+                                  itemBuilder: (BuildContext context) {
+                                    return [
+                                      const PopupMenuItem<String>(
+                                        value: 'edit',
+                                        child: Text('Edit Product'),
+                                      ),
+                                      const PopupMenuItem<String>(
+                                        value: 'delete',
+                                        child: Text('Delete Product'),
+                                      ),
+                                    ];
+                                  },
+                                ),
+                              ],
                       ),
                       ProductImages(
                         images: [
@@ -131,28 +223,8 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                           ),
                         ),
                       ),
-                      SliverToBoxAdapter(
-                        child: SizedBox(
-                          height: 220,
-                          child: ListView.builder(
-                            scrollDirection: Axis.horizontal,
-                            itemCount: 5,
-                            itemBuilder: (context, index) => Padding(
-                              padding: EdgeInsets.only(
-                                  left: defaultPadding,
-                                  right: index == 4 ? defaultPadding : 0),
-                              child: ProductCard(
-                                image: productDemoImg2,
-                                title: "Sleeveless Tiered Dobby Swing Dress",
-                                brandName: "LIPSY LONDON",
-                                price: 24.65,
-                                priceAfetDiscount: index.isEven ? 20.99 : null,
-                                dicountpercent: index.isEven ? 25 : null,
-                                press: () {},
-                              ),
-                            ),
-                          ),
-                        ),
+                      const SliverToBoxAdapter(
+                        child: MostPopular(isShowTitle: false),
                       ),
                       const SliverToBoxAdapter(
                         child: SizedBox(height: defaultPadding),

@@ -8,7 +8,7 @@ import '../../../constants.dart';
 class BannerMStyle2 extends StatelessWidget {
   const BannerMStyle2({
     super.key,
-    this.image = "https://i.imgur.com/J1Qjut7.png",
+    this.image = "https://play-lh.googleusercontent.com/KrAkc0PoEDszt4tBp5C1DkGzWy_dUl9BgJb8LyZSx6ixTDSlnIPMk9MIyCxHJ7WuvI_t=w526-h296-rw",
     required this.title,
     required this.press,
     this.subtitle,

@@ -20,11 +20,17 @@ class _CreateProductScreenState extends State<CreateProductScreen> {
   final TextEditingController _priceController = TextEditingController();
   final TextEditingController _priceAfterDiscountController =
       TextEditingController();
-  final TextEditingController _discountPercentController =
+  final TextEditingController _describePercentController =
       TextEditingController();
+
+  bool _isSaving = false; // Trạng thái loading khi nhấn nút Save
 
   Future<void> _saveProduct() async {
     if (_formKey.currentState!.validate()) {
+      setState(() {
+        _isSaving = true; // Bắt đầu loading
+      });
+
       final prefs = await SharedPreferences.getInstance();
 
       final product = ProductModel(
@@ -32,58 +38,40 @@ class _CreateProductScreenState extends State<CreateProductScreen> {
         brandName: _brandNameController.text,
         title: _titleController.text,
         price: double.parse(_priceController.text),
-        priceAfetDiscount: double.parse(_priceAfterDiscountController.text),
-        dicountpercent: int.parse(_discountPercentController.text),
+        priceAfetDiscount: double.tryParse(_priceAfterDiscountController.text),
+        describe: _describePercentController.text,
         id: const Uuid().v4(),
         ownerId: prefs.getString('email') ?? "",
+        createdAt: DateTime.now().toString(),
       );
-      addProduct(product, "products");
-    }
-    // else{
-    // print("Create");
-    // uploadProductList(demoPopularProducts, "products");
-    // uploadProductList(demoFlashSaleProducts, "products");
-    // uploadProductList(demoBestSellersProducts, "products");
-    // print("finished");
-    //}
-  }
 
-  Future<void> uploadProductList(
-      List<ProductModel> productList, String collection) async {
-    final productCollection = FirebaseFirestore.instance.collection(collection);
+      try {
+        await addProduct(product, "products");
 
-    WriteBatch batch =
-        FirebaseFirestore.instance.batch(); // Sử dụng batch để tối ưu
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Product saved successfully!')),
+        );
 
-    try {
-      for (var product in productList) {
-        final docRef = productCollection
-            .doc(product.id); // Tạo document với ID của sản phẩm
-        batch.set(docRef, product.toFirestore());
+        Navigator.of(context).pop(true); // Quay lại khi lưu thành công
+      } catch (e) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Create product failed: $e')),
+        );
+      } finally {
+        setState(() {
+          _isSaving = false; // Tắt loading
+        });
       }
-
-      await batch.commit(); // Thực hiện đẩy dữ liệu lên Firestore
-      print("All products uploaded successfully!");
-    } catch (e) {
-      print("Error uploading products: $e");
     }
   }
 
   Future<void> addProduct(ProductModel product, String collection) async {
-    // Tham chiếu đến collection 'products' trong Firestore
     final productCollection = FirebaseFirestore.instance.collection(collection);
 
     try {
-      // Tạo document mới với ID từ model hoặc tự sinh
       await productCollection.doc(product.id).set(product.toFirestore());
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Product saved successfully!')),
-      );
-      Navigator.of(context).pop();
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Create product failed!')),
-      );
+      throw Exception('Error creating product: $e');
     }
   }
 
@@ -117,7 +105,7 @@ class _CreateProductScreenState extends State<CreateProductScreen> {
     _titleController.dispose();
     _priceController.dispose();
     _priceAfterDiscountController.dispose();
-    _discountPercentController.dispose();
+    _describePercentController.dispose();
     super.dispose();
   }
 
@@ -214,16 +202,15 @@ class _CreateProductScreenState extends State<CreateProductScreen> {
                         ),
                         const SizedBox(height: 8),
                         TextFormField(
-                          controller: _discountPercentController,
+                          controller: _describePercentController,
+                          maxLines: 5,
                           decoration: const InputDecoration(
-                              labelText: 'Discount Percent'),
-                          keyboardType: TextInputType.number,
+                            labelText: 'Describe',
+                            alignLabelWithHint: true,
+                          ),
                           validator: (value) {
                             if (value == null || value.isEmpty) {
-                              return 'Please enter the discount percent';
-                            }
-                            if (int.tryParse(value) == null) {
-                              return 'Please enter a valid integer';
+                              return 'Please enter the description';
                             }
                             return null;
                           },
@@ -233,8 +220,12 @@ class _CreateProductScreenState extends State<CreateProductScreen> {
                     ),
                   ),
                   ElevatedButton(
-                    onPressed: _saveProduct,
-                    child: const Text('Save Product'),
+                    onPressed: _isSaving ? null : _saveProduct,
+                    child: _isSaving
+                        ? const CircularProgressIndicator(
+                            color: Colors.white,
+                          )
+                        : const Text('Save Product'),
                   ),
                 ],
               ),

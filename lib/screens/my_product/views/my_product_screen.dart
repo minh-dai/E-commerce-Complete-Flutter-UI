@@ -118,14 +118,18 @@ class _MyProductScreenState extends State<MyProductScreen> {
                                   price: product.price,
                                   priceAfetDiscount: product.priceAfetDiscount,
                                   dicountpercent: product.dicountpercent,
-                                  press: () {
-                                    Navigator.pushNamed(
+                                  press: () async {
+                                    final result = await Navigator.pushNamed(
                                       context,
                                       productDetailsScreenRoute,
                                       arguments: ParamProduct(
                                         productId: product.id,
+                                        callBack: _fetchProducts,
                                       ),
                                     );
+                                    if (result == true) {
+                                      _fetchProducts();
+                                    }
                                   },
                                 );
                               },
@@ -137,8 +141,11 @@ class _MyProductScreenState extends State<MyProductScreen> {
                     ),
             ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.pushNamed(context, createProduct);
+        onPressed: () async {
+          final result = await Navigator.pushNamed(context, createProduct);
+          if (result == true) {
+            _fetchProducts();
+          }
         },
         child: const Icon(Icons.add),
       ),

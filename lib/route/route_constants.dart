@@ -17,6 +17,8 @@ const String setupFingerprintScreenRoute = "setup_fingerprint";
 const String setupFaceIdScreenRoute = "setup_faceid";
 const String productDetailsScreenRoute = "product_details";
 const String createProduct = "createProduct";
+const String updateProduct = "updateProduct";
+
 const String productReviewsScreenRoute = "product_reviews";
 const String addReviewsScreenRoute = "add_reviews";
 const String homeScreenRoute = "home";

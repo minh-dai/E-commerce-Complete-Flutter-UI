@@ -5,6 +5,7 @@ import 'package:shop/screens/my_product/views/my_product_screen.dart';
 import 'package:shop/screens/product/create/create_product_screen.dart';
 import 'package:shop/screens/product/views/product_details_screen.dart';
 
+import '../screens/product/update/update_product_screen.dart';
 import 'screen_export.dart';
 
 Route<dynamic> generateRoute(RouteSettings settings) {
@@ -28,6 +29,7 @@ Route<dynamic> generateRoute(RouteSettings settings) {
           return ProductDetailsScreen(
             productId: paramProduct.productId,
             collection: paramProduct.collection,
+              callBack: paramProduct?.callBack,
           );
         },
       );
@@ -35,6 +37,13 @@ Route<dynamic> generateRoute(RouteSettings settings) {
       return MaterialPageRoute(
         builder: (context) {
           return CreateProductScreen();
+        },
+      );
+    case updateProduct:
+      return MaterialPageRoute(
+        builder: (context) {
+          final productId = settings.arguments as String;
+          return UpdateProductScreen(productId: productId);
         },
       );
 

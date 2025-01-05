@@ -85,7 +85,7 @@ class ProductCard extends StatelessWidget {
                         .copyWith(fontSize: 12),
                   ),
                   const Spacer(),
-                  priceAfetDiscount != null && priceAfetDiscount! > 0
+                  priceAfetDiscount != null
                       ? Row(
                           children: [
                             Text(
