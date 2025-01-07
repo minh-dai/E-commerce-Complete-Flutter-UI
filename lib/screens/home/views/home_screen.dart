@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:shop/components/Banner/S/banner_s_style_1.dart';
-import 'package:shop/components/Banner/S/banner_s_style_5.dart';
 import 'package:shop/constants.dart';
 import 'package:shop/route/screen_export.dart';
 
 import 'components/best_sellers.dart';
 import 'components/flash_sale.dart';
-import 'components/most_popular.dart';
+import 'components/get_all_product_widget.dart';
 import 'components/offer_carousel_and_categories.dart';
 import 'components/popular_products.dart';
 
@@ -15,6 +14,7 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    double height = MediaQuery.sizeOf(context).height;
     return Scaffold(
       body: SafeArea(
         child: CustomScrollView(
@@ -44,28 +44,45 @@ class HomeScreen extends StatelessWidget {
               ),
             ),
             const SliverToBoxAdapter(child: BestSellers()),
-            const SliverToBoxAdapter(child: MostPopular()),
             SliverToBoxAdapter(
-              child: Column(
-                children: [
-                  const SizedBox(height: defaultPadding * 1.5),
-
-                  const SizedBox(height: defaultPadding / 4),
-                  // While loading use 👇
-                  // const BannerSSkelton(),
-                  BannerSStyle5(
-                    title: "Black \nfriday",
-                    subtitle: "50% Off",
-                    bottomText: "Collection".toUpperCase(),
-                    press: () {
-                      //Navigator.pushNamed(context, onSaleScreenRoute);
-                    },
-                  ),
-                  const SizedBox(height: defaultPadding / 4),
-                ],
+              child: SizedBox(
+                height: 370,
+                width: double.infinity,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 16, vertical: 8),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const Text(
+                            "All Items:",
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          IconButton(
+                            icon: const Icon(Icons.arrow_forward),
+                            onPressed: () {
+                              Navigator.pushNamed(context, allProductScreen);
+                            },
+                          ),
+                        ],
+                      ),
+                    ),
+                    const Expanded(child: GetAllProductWidget()),
+                  ],
+                ),
               ),
             ),
-            const SliverToBoxAdapter(child: BestSellers()),
+            const SliverToBoxAdapter(
+                child: SizedBox(
+              height: 20,
+            )),
           ],
         ),
       ),

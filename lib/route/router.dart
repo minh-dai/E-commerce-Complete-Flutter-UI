@@ -7,6 +7,7 @@ import 'package:shop/screens/product/views/product_details_screen.dart';
 import 'package:shop/screens/profile/edit/change_password_screen.dart';
 import 'package:shop/screens/profile/edit/edit_user_screen.dart';
 
+import '../screens/home/all_product/all_product_screen.dart';
 import '../screens/product/update/update_product_screen.dart';
 import 'screen_export.dart';
 
@@ -48,7 +49,12 @@ Route<dynamic> generateRoute(RouteSettings settings) {
           return UpdateProductScreen(productId: productId);
         },
       );
-
+    case allProductScreen:
+      return MaterialPageRoute(
+        builder: (context) {
+          return const AllProductScreen();
+        },
+      );
     case homeScreenRoute:
       return MaterialPageRoute(
         builder: (context) => const HomeScreen(),

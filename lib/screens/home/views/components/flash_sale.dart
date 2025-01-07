@@ -37,14 +37,6 @@ class FlashSale extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        // While loading show 👇
-        // const BannerMWithCounterSkelton(),
-        BannerMWithCounter(
-          duration: const Duration(hours: 8),
-          text: "Super Flash Sale \n50% Off",
-          press: () {},
-        ),
-        const SizedBox(height: defaultPadding / 2),
         Padding(
           padding: const EdgeInsets.all(defaultPadding),
           child: Text(
