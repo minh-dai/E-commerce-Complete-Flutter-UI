@@ -3,7 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../../../constants.dart';
 
-class SignUpForm extends StatelessWidget {
+class SignUpForm extends StatefulWidget {
   const SignUpForm({
     super.key,
     required this.formKey,
@@ -12,13 +12,21 @@ class SignUpForm extends StatelessWidget {
   final GlobalKey<FormState> formKey;
 
   @override
+  State<SignUpForm> createState() => _SignUpFormState();
+}
+
+class _SignUpFormState extends State<SignUpForm> {
+  bool _passwordVisible = false; // Trạng thái mật khẩu
+
+  @override
   Widget build(BuildContext context) {
     return Form(
-      key: formKey,
+      key: widget.formKey,
       child: Column(
         children: [
+          // Trường Email
           TextFormField(
-            onSaved: (emal) {
+            onSaved: (email) {
               // Email
             },
             validator: emaildValidator.call,
@@ -28,7 +36,7 @@ class SignUpForm extends StatelessWidget {
               hintText: "Email address",
               prefixIcon: Padding(
                 padding:
-                    const EdgeInsets.symmetric(vertical: defaultPadding * 0.75),
+                const EdgeInsets.symmetric(vertical: defaultPadding * 0.75),
                 child: SvgPicture.asset(
                   "assets/icons/Message.svg",
                   height: 24,
@@ -46,17 +54,18 @@ class SignUpForm extends StatelessWidget {
             ),
           ),
           const SizedBox(height: defaultPadding),
+          // Trường Password
           TextFormField(
             onSaved: (pass) {
               // Password
             },
             validator: passwordValidator.call,
-            obscureText: true,
+            obscureText: !_passwordVisible, // Xử lý ẩn/hiện mật khẩu
             decoration: InputDecoration(
               hintText: "Password",
               prefixIcon: Padding(
                 padding:
-                    const EdgeInsets.symmetric(vertical: defaultPadding * 0.75),
+                const EdgeInsets.symmetric(vertical: defaultPadding * 0.75),
                 child: SvgPicture.asset(
                   "assets/icons/Lock.svg",
                   height: 24,
@@ -70,6 +79,17 @@ class SignUpForm extends StatelessWidget {
                     BlendMode.srcIn,
                   ),
                 ),
+              ),
+              suffixIcon: IconButton(
+                icon: Icon(
+                  _passwordVisible ? Icons.visibility : Icons.visibility_off,
+                  color: Theme.of(context).primaryColor,
+                ),
+                onPressed: () {
+                  setState(() {
+                    _passwordVisible = !_passwordVisible; // Chuyển trạng thái
+                  });
+                },
               ),
             ),
           ),

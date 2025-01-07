@@ -4,6 +4,7 @@ import 'package:shop/models/param_product.dart';
 import 'package:shop/screens/my_product/views/my_product_screen.dart';
 import 'package:shop/screens/product/create/create_product_screen.dart';
 import 'package:shop/screens/product/views/product_details_screen.dart';
+import 'package:shop/screens/profile/edit/change_password_screen.dart';
 import 'package:shop/screens/profile/edit/edit_user_screen.dart';
 
 import '../screens/product/update/update_product_screen.dart';
@@ -72,6 +73,10 @@ Route<dynamic> generateRoute(RouteSettings settings) {
     case editProfile:
       return MaterialPageRoute(
         builder: (context) => EditUserScreen(),
+      );
+    case changePassword:
+      return MaterialPageRoute(
+        builder: (context) => ChangePasswordScreen(),
       );
     case userInfoScreenRoute:
       return MaterialPageRoute(

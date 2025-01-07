@@ -3,7 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../../../constants.dart';
 
-class LogInForm extends StatelessWidget {
+class LogInForm extends StatefulWidget {
   const LogInForm({
     super.key,
     required this.formKey,
@@ -16,14 +16,21 @@ class LogInForm extends StatelessWidget {
   final TextEditingController passwordController;
 
   @override
+  _LogInFormState createState() => _LogInFormState();
+}
+
+class _LogInFormState extends State<LogInForm> {
+  bool _passwordVisible = false; // Trạng thái hiển thị mật khẩu
+
+  @override
   Widget build(BuildContext context) {
     return Form(
-      key: formKey,
+      key: widget.formKey,
       child: Column(
         children: [
           TextFormField(
-            controller: emailController,
-            onSaved: (emal) {
+            controller: widget.emailController,
+            onSaved: (email) {
               // Email
             },
             validator: emaildValidator.call,
@@ -32,8 +39,7 @@ class LogInForm extends StatelessWidget {
             decoration: InputDecoration(
               hintText: "Email address",
               prefixIcon: Padding(
-                padding:
-                const EdgeInsets.symmetric(vertical: defaultPadding * 0.75),
+                padding: const EdgeInsets.symmetric(vertical: defaultPadding * 0.75),
                 child: SvgPicture.asset(
                   "assets/icons/Message.svg",
                   height: 24,
@@ -51,17 +57,16 @@ class LogInForm extends StatelessWidget {
           ),
           const SizedBox(height: defaultPadding),
           TextFormField(
-            controller: passwordController,
+            controller: widget.passwordController,
             onSaved: (pass) {
               // Password
             },
             validator: passwordValidator.call,
-            obscureText: true,
+            obscureText: !_passwordVisible, // Xử lý ẩn/mở mật khẩu
             decoration: InputDecoration(
               hintText: "Password",
               prefixIcon: Padding(
-                padding:
-                    const EdgeInsets.symmetric(vertical: defaultPadding * 0.75),
+                padding: const EdgeInsets.symmetric(vertical: defaultPadding * 0.75),
                 child: SvgPicture.asset(
                   "assets/icons/Lock.svg",
                   height: 24,
@@ -74,6 +79,17 @@ class LogInForm extends StatelessWidget {
                           .withOpacity(0.3),
                       BlendMode.srcIn),
                 ),
+              ),
+              suffixIcon: IconButton(
+                icon: Icon(
+                  _passwordVisible ? Icons.visibility : Icons.visibility_off,
+                  color: Theme.of(context).primaryColor,
+                ),
+                onPressed: () {
+                  setState(() {
+                    _passwordVisible = !_passwordVisible; // Thay đổi trạng thái
+                  });
+                },
               ),
             ),
           ),

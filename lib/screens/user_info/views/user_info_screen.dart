@@ -174,7 +174,7 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
                     ),
                   ),
                   TextButton(
-                    onPressed: () => _showChangePasswordDialog(context),
+                    onPressed: () => Navigator.pushNamed(context, changePassword),
                     child: const Text(
                       'Change Password',
                       style: TextStyle(color: Colors.blue),
