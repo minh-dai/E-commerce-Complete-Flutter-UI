@@ -4,6 +4,10 @@ class UserModel {
   final String? name;
   final String? phoneNumber;
   final String? createdAt;
+  final String? birthday;
+  final String? avatar;
+  final String? gender;
+
 
   UserModel({
     required this.email,
@@ -11,6 +15,9 @@ class UserModel {
     this.name,
     this.phoneNumber,
     this.createdAt,
+    this.birthday,
+    this.avatar,
+    this.gender,
   });
 
   // Chuyển từ Firestore Document thành UserModel
@@ -21,6 +28,9 @@ class UserModel {
       name: data['name'] as String?,
       phoneNumber: data['phoneNumber'] as String?,
       createdAt: data['createdAt'] as String?,
+      birthday: data['birthday'] as String?,
+      avatar: data['avatar'] as String?,
+      gender: data['gender'] as String?,
     );
   }
 
@@ -32,6 +42,9 @@ class UserModel {
       'name': name,
       'phoneNumber': phoneNumber,
       'createdAt': createdAt,
+      'birthday': birthday,
+      'avatar': avatar,
+      'gender': gender,
     };
   }
 }

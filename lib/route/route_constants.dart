@@ -36,6 +36,7 @@ const String profileScreenRoute = "profile";
 const String getHelpScreenRoute = "get_help";
 const String chatScreenRoute = "chat";
 const String userInfoScreenRoute = "user_info";
+const String editProfile = "editProfile";
 const String currentPasswordScreenRoute = "current_passowrd";
 const String editUserInfoScreenRoute = "edit_user_info";
 const String notificationsScreenRoute = "notifications";

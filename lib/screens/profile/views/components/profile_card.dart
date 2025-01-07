@@ -1,9 +1,12 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../../constants.dart';
 
-class ProfileCard extends StatelessWidget {
+class ProfileCard extends StatefulWidget {
   const ProfileCard({
     super.key,
     required this.name,
@@ -22,30 +25,47 @@ class ProfileCard extends StatelessWidget {
   final VoidCallback? press;
 
   @override
+  _ProfileCardState createState() => _ProfileCardState();
+}
+
+class _ProfileCardState extends State<ProfileCard> {
+  String savedEmail = '';
+  String avatarFileLocal = '';
+
+  @override
+  void initState() {
+    super.initState();
+    _loadUserData();
+  }
+
+  Future<void> _loadUserData() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      savedEmail = prefs.getString('email') ?? '';
+      avatarFileLocal = prefs.getString('avatar') ?? '';
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     return ListTile(
-      onTap: press,
-      // leading: CircleAvatar(
-      //   radius: 28,
-      //   child: NetworkImageWithLoader(
-      //     imageSrc,
-      //     radius: 100,
-      //   ),
-      // ),
-      leading: const CircleAvatar(
+      onTap: widget.press,
+      leading: CircleAvatar(
         radius: 28,
-        backgroundImage: AssetImage('assets/images/avatar.png'),
+        backgroundImage: avatarFileLocal.isNotEmpty
+            ? FileImage(File(avatarFileLocal))
+            : const AssetImage('assets/images/avatar.png') as ImageProvider,
       ),
       title: Row(
         children: [
           Text(
-            isShowHi ? "Hi, $name" : name,
+            widget.isShowHi ? "Hi, ${widget.name}" : widget.name,
             style: const TextStyle(fontWeight: FontWeight.w500),
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
           ),
           const SizedBox(width: defaultPadding / 2),
-          if (isPro)
+          if (widget.isPro)
             Container(
               padding: const EdgeInsets.symmetric(
                   horizontal: defaultPadding / 2, vertical: defaultPadding / 4),
@@ -55,7 +75,7 @@ class ProfileCard extends StatelessWidget {
                     BorderRadius.all(Radius.circular(defaultBorderRadious)),
               ),
               child: Text(
-                proLableText,
+                widget.proLableText,
                 style: const TextStyle(
                   fontFamily: grandisExtendedFont,
                   fontSize: 10,
@@ -68,8 +88,8 @@ class ProfileCard extends StatelessWidget {
             ),
         ],
       ),
-      subtitle: Text(email),
-      trailing: isShowArrow
+      subtitle: Text(savedEmail.isNotEmpty ? savedEmail : widget.email),
+      trailing: widget.isShowArrow
           ? SvgPicture.asset(
               "assets/icons/miniRight.svg",
               color: Theme.of(context).iconTheme.color!.withOpacity(0.4),
