@@ -60,10 +60,6 @@ Route<dynamic> generateRoute(RouteSettings settings) {
         builder: (context) => const HomeScreen(),
       );
 
-    case discoverScreenRoute:
-      return MaterialPageRoute(
-        builder: (context) => const DiscoverScreen(),
-      );
     case myProductScreenRoute:
       return MaterialPageRoute(
         builder: (context) => const MyProductScreen(),
@@ -87,10 +83,6 @@ Route<dynamic> generateRoute(RouteSettings settings) {
     case userInfoScreenRoute:
       return MaterialPageRoute(
         builder: (context) => const UserInfoScreen(),
-      );
-    case preferencesScreenRoute:
-      return MaterialPageRoute(
-        builder: (context) => const PreferencesScreen(),
       );
     default:
       return MaterialPageRoute(

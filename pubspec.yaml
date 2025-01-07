@@ -1,5 +1,5 @@
 name: shop
-description: FlutterShop is a premium E-commerce UI kit that you can use to build various e-commerce apps using Flutter that works on both Android & iOS. This kit contains 100+ nicely crafted minimal screens that cover everything you need for your shop app.
+description: create by Huy
 
 publish_to: "none"
 
@@ -42,9 +42,6 @@ flutter:
     - assets/images/
     - assets/icons/
     - assets/Illustration/
-    - assets/flags/
-    - assets/logo/
-    - assets/screens/
 
   fonts:
     - family: Plus Jakarta

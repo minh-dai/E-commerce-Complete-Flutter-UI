@@ -86,7 +86,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             text: "Get Help",
             svgSrc: "assets/icons/Help.svg",
             press: () {
-              Navigator.pushNamed(context, getHelpScreenRoute);
+
             },
           ),
           ProfileMenuListTile(

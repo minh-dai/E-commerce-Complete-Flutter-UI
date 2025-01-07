@@ -27,22 +27,3 @@ class Skeleton extends StatelessWidget {
   }
 }
 
-class CircleSkeleton extends StatelessWidget {
-  const CircleSkeleton({super.key, this.size = 24});
-
-  final double? size;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      height: size,
-      width: size,
-      // padding: const EdgeInsets.all(defaultPadding),
-      decoration: BoxDecoration(
-        // color: Theme.of(context).primaryColor.withOpacity(0.04),
-        color: Theme.of(context).iconTheme.color!.withOpacity(0.04),
-        shape: BoxShape.circle,
-      ),
-    );
-  }
-}

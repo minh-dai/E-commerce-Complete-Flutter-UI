@@ -133,7 +133,7 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
                     SizedBox(
                       height: 100,
                       width: 100,
-                      child: _avatarFile != null
+                      child: _avatarFile != null && _avatarFile!.isNotEmpty
                           ? ClipRRect(
                               borderRadius: new BorderRadius.circular(100.0),
                               child: Image.file(
