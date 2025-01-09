@@ -52,14 +52,13 @@ class _AllProductScreenState extends State<AllProductScreen> {
       QuerySnapshot snapshot = await query.get();
 
       if (snapshot.docs.isNotEmpty) {
-        setState(() {
-          _lastDocument = snapshot.docs.last;
-          _products.addAll(snapshot.docs.map((doc) {
-            final data = doc.data() as Map<String, dynamic>;
-            return ProductModel.fromFirestore(data);
-          }).toList());
-          _hasMore = snapshot.docs.length == _limit;
-        });
+        _lastDocument = snapshot.docs.last;
+        _products.addAll(snapshot.docs.map((doc) {
+          final data = doc.data() as Map<String, dynamic>;
+          return ProductModel.fromFirestore(data);
+        }).toList());
+        _hasMore = snapshot.docs.length == _limit;
+        setState(() {});
       } else {
         setState(() {
           _hasMore = false;
@@ -81,7 +80,6 @@ class _AllProductScreenState extends State<AllProductScreen> {
     }
   }
 
-
   Future<void> _refreshProducts() async {
     setState(() {
       _products.clear();
@@ -100,74 +98,74 @@ class _AllProductScreenState extends State<AllProductScreen> {
       ),
       body: _isLoading
           ? const Center(
-        child: CircularProgressIndicator(),
-      )
+              child: CircularProgressIndicator(),
+            )
           : RefreshIndicator(
-        onRefresh: _refreshProducts,
-        child: NotificationListener<ScrollNotification>(
-          onNotification: (ScrollNotification scrollInfo) {
-            if (!_isLoadingMore &&
-                _hasMore &&
-                scrollInfo.metrics.pixels ==
-                    scrollInfo.metrics.maxScrollExtent) {
-              setState(() {
-                _isLoadingMore = true;
-              });
-              _fetchAllProducts(isLoadMore: true);
-            }
-            return false;
-          },
-          child: CustomScrollView(
-            slivers: [
-              SliverPadding(
-                padding: const EdgeInsets.symmetric(
-                    horizontal: defaultPadding, vertical: defaultPadding),
-                sliver: SliverGrid(
-                  gridDelegate:
-                  const SliverGridDelegateWithMaxCrossAxisExtent(
-                    maxCrossAxisExtent: 200.0,
-                    mainAxisSpacing: defaultPadding,
-                    crossAxisSpacing: defaultPadding,
-                    childAspectRatio: 0.66,
-                  ),
-                  delegate: SliverChildBuilderDelegate(
-                        (BuildContext context, int index) {
-                      final product = _products[index];
-                      return ProductCard(
-                        image: product.image,
-                        brandName: product.brandName,
-                        title: product.title,
-                        price: product.price,
-                        priceAfetDiscount: product.priceAfetDiscount,
-                        dicountpercent: product.dicountpercent,
-                        press: () {
-                          Navigator.pushNamed(
-                            context,
-                            productDetailsScreenRoute,
-                            arguments: ParamProduct(
-                              productId: product.id,
-                            ),
-                          );
-                        },
-                      );
-                    },
-                    childCount: _products.length,
-                  ),
+              onRefresh: _refreshProducts,
+              child: NotificationListener<ScrollNotification>(
+                onNotification: (ScrollNotification scrollInfo) {
+                  if (!_isLoadingMore &&
+                      _hasMore &&
+                      scrollInfo.metrics.pixels ==
+                          scrollInfo.metrics.maxScrollExtent) {
+                    setState(() {
+                      _isLoadingMore = true;
+                    });
+                    _fetchAllProducts(isLoadMore: true);
+                  }
+                  return false;
+                },
+                child: CustomScrollView(
+                  slivers: [
+                    SliverPadding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: defaultPadding, vertical: defaultPadding),
+                      sliver: SliverGrid(
+                        gridDelegate:
+                            const SliverGridDelegateWithMaxCrossAxisExtent(
+                          maxCrossAxisExtent: 200.0,
+                          mainAxisSpacing: defaultPadding,
+                          crossAxisSpacing: defaultPadding,
+                          childAspectRatio: 0.66,
+                        ),
+                        delegate: SliverChildBuilderDelegate(
+                          (BuildContext context, int index) {
+                            final product = _products[index];
+                            return ProductCard(
+                              image: product.image,
+                              brandName: product.brandName,
+                              title: product.title,
+                              price: product.price,
+                              priceAfetDiscount: product.priceAfetDiscount,
+                              dicountpercent: product.dicountpercent,
+                              press: () {
+                                Navigator.pushNamed(
+                                  context,
+                                  productDetailsScreenRoute,
+                                  arguments: ParamProduct(
+                                    productId: product.id,
+                                  ),
+                                );
+                              },
+                            );
+                          },
+                          childCount: _products.length,
+                        ),
+                      ),
+                    ),
+                    if (_isLoadingMore)
+                      const SliverToBoxAdapter(
+                        child: Padding(
+                          padding: EdgeInsets.all(16.0),
+                          child: Center(
+                            child: CircularProgressIndicator(),
+                          ),
+                        ),
+                      ),
+                  ],
                 ),
               ),
-              if (_isLoadingMore)
-                const SliverToBoxAdapter(
-                  child: Padding(
-                    padding: EdgeInsets.all(16.0),
-                    child: Center(
-                      child: CircularProgressIndicator(),
-                    ),
-                  ),
-                ),
-            ],
-          ),
-        ),
-      ),
+            ),
     );
   }
 }

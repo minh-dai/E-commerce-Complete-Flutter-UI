@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shop/components/custom_modal_bottom_sheet.dart';
-import 'package:shop/components/product/product_card.dart';
 import 'package:shop/constants.dart';
 import 'package:shop/models/product_model.dart';
 import 'package:shop/screens/product/views/product_returns_screen.dart';
@@ -62,6 +61,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
               snapshot.data() as Map<String, dynamic>);
           _isLoading = false;
         });
+        
       } else {
         throw Exception("Product not found");
       }

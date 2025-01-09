@@ -3,18 +3,17 @@ import 'package:shop/components/Banner/S/banner_s_style_1.dart';
 import 'package:shop/constants.dart';
 import 'package:shop/route/screen_export.dart';
 
-import 'components/best_sellers.dart';
 import 'components/flash_sale.dart';
 import 'components/get_all_product_widget.dart';
 import 'components/offer_carousel_and_categories.dart';
 import 'components/popular_products.dart';
 
+/// Widget
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    double height = MediaQuery.sizeOf(context).height;
     return Scaffold(
       body: SafeArea(
         child: CustomScrollView(
@@ -28,8 +27,6 @@ class HomeScreen extends StatelessWidget {
             SliverToBoxAdapter(
               child: Column(
                 children: [
-                  // While loading use 👇
-                  // const BannerMSkelton(),‚
                   BannerSStyle1(
                     title: "New \narrival",
                     subtitle: "SPECIAL OFFER",
@@ -43,7 +40,6 @@ class HomeScreen extends StatelessWidget {
                 ],
               ),
             ),
-            const SliverToBoxAdapter(child: BestSellers()),
             SliverToBoxAdapter(
               child: SizedBox(
                 height: 370,

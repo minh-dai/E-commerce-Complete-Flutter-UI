@@ -16,42 +16,44 @@ class OnBordingScreen extends StatefulWidget {
 class _OnBordingScreenState extends State<OnBordingScreen> {
   late PageController _pageController;
   int _pageIndex = 0;
+
   final List<Onbord> _onbordData = [
     Onbord(
       image: "assets/Illustration/Illustration-0.png",
-      imageDarkTheme: "assets/Illustration/Illustration_darkTheme_0.png",
-      title: "Find the item you’ve \nbeen looking for",
+      imageDarkTheme: "assets/Illustration/Illustration-0.png",
+      title: "Discover unique items",
       description:
-          "Here you’ll see rich varieties of goods, carefully classified for seamless browsing experience.",
+      "Browse through the list of in-game items, clearly categorized for easy searching.",
     ),
     Onbord(
       image: "assets/Illustration/Illustration-1.png",
-      imageDarkTheme: "assets/Illustration/Illustration_darkTheme_1.png",
-      title: "Get those shopping \nbags filled",
+      imageDarkTheme: "assets/Illustration/Illustration-1.png",
+      title: "Add to your favorite list",
       description:
-          "Add any item you want to your cart, or save it on your wishlist, so you don’t miss it in your future purchases.",
+      "Save the items you want to your cart or wishlist so you don’t miss them.",
     ),
     Onbord(
       image: "assets/Illustration/Illustration-2.png",
-      imageDarkTheme: "assets/Illustration/Illustration_darkTheme_2.png",
-      title: "Fast & secure \npayment",
-      description: "There are many payment options available for your ease.",
+      imageDarkTheme: "assets/Illustration/Illustration-2.png",
+      title: "Fast and secure payment",
+      description: "The system supports multiple convenient and secure payment methods.",
     ),
     Onbord(
       image: "assets/Illustration/Illustration-3.png",
-      imageDarkTheme: "assets/Illustration/Illustration_darkTheme_3.png",
-      title: "Package tracking",
+      imageDarkTheme: "assets/Illustration/Illustration-3.png",
+      title: "Track your orders",
       description:
-          "In particular, The app can pack your orders, and help you seamlessly manage your shipments.",
+      "Manage your in-game orders from the moment you place them to receiving your items successfully.",
     ),
     Onbord(
       image: "assets/Illustration/Illustration-4.png",
-      imageDarkTheme: "assets/Illustration/Illustration_darkTheme_4.png",
+      imageDarkTheme: "assets/Illustration/Illustration-4.png",
       title: "Nearby stores",
       description:
-          "Easily track nearby shops, browse through their items and get information about their prodcuts.",
+      "View the list of in-game shops, explore their items, and get detailed information.",
     ),
   ];
+
 
   @override
   void initState() {
